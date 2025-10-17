@@ -4,18 +4,16 @@ from langchain.output_parsers import PydanticOutputParser
 from langchain.chains import LLMChain
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from pydantic import BaseModel, Field
-from dotenv import load_dotenv
 import os
 
 # -----------------------------
-# Load environment variables
+# Load Hugging Face token from Streamlit secrets
 # -----------------------------
-# load_dotenv()
-# os.getenv("HUGGINGFACEHUB_API_TOKEN") == "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"
-# HF_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
-# if not HF_TOKEN:
-#     st.error("HUGGINGFACEHUB_API_TOKEN not found in environment")
-#     st.stop()
+HF_TOKEN = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+
+if not HF_TOKEN:
+    st.error("HUGGINGFACEHUB_API_TOKEN not found in Streamlit secrets")
+    st.stop()
 
 # -----------------------------
 # Define LLM
@@ -23,7 +21,7 @@ import os
 llm_endpoint = HuggingFaceEndpoint(
     repo_id="mistralai/Mistral-7B-Instruct-v0.3",
     task="text-generation",
-    huggingfacehub_api_token="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",
+    huggingfacehub_api_token=HF_TOKEN,
 )
 
 model = ChatHuggingFace(llm=llm_endpoint)
@@ -67,6 +65,7 @@ chain = LLMChain(
 st.title("Emotion Analysis App ❤️")
 st.write("Type a text below and the AI will classify its emotion.")
 
+# Single-line input (submit manually with button)
 user_input = st.text_input("Enter your text here:")
 
 if st.button("Analyze"):
