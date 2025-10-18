@@ -1,12 +1,12 @@
 import streamlit as st
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from langchain.chains import LLMChain
+from langchain.chains.llm import LLMChain
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from pydantic import BaseModel, Field
 
 # -----------------------------
-# Streamlit Secrets (Hugging Face Token)
+# Streamlit Secrets
 # -----------------------------
 try:
     HF_TOKEN = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
@@ -15,7 +15,7 @@ except KeyError:
     st.stop()
 
 # -----------------------------
-# Define HuggingFace Endpoint
+# Define HuggingFace LLM
 # -----------------------------
 try:
     llm_endpoint = HuggingFaceEndpoint(
@@ -30,7 +30,7 @@ except Exception as e:
 model = ChatHuggingFace(llm=llm_endpoint)
 
 # -----------------------------
-# Pydantic schema for emotion output
+# Pydantic schema for output
 # -----------------------------
 class EmotionOutput(BaseModel):
     emotion: str = Field(..., description="One of ['Anger', 'Sad', 'Happy', 'Love']")
@@ -50,6 +50,7 @@ Text: {text}
 
 Respond in strict JSON format compatible with the schema.
 """
+
 prompt = PromptTemplate(template=template, input_variables=["text"])
 
 # -----------------------------
