@@ -20,10 +20,9 @@ if not HF_TOKEN:
 # Define LLM
 # -----------------------------
 llm_endpoint = HuggingFaceEndpoint(
-    repo_id="mistralai/Mistral-7B-Instruct-v0.3",
+    repo_id="HuggingFaceH4/zephyr-7b-beta",
     task="text-generation",
-    huggingfacehub_api_token=HF_TOKEN,
-    use_cache=False
+    huggingfacehub_api_token=HF_TOKEN
 )
 
 model = ChatHuggingFace(llm=llm_endpoint)
@@ -83,5 +82,6 @@ if st.button("Analyze"):
                 st.write(f"**Confidence:** {result.confidence:.2f}")
             except Exception as e:
                 st.error(f"Error: {e}")
+
 
 
