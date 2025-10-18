@@ -1,22 +1,26 @@
-# Core Streamlit
-streamlit
+# LangChain Core
+langchain
+langchain-core
 
-# LangChain ecosystem (latest modular split)
-langchain==0.3.7
-langchain-core==0.3.27
-langchain-community==0.3.7
-langchain-huggingface==0.1.2
+# OpenAI Integration
+langchain-openai
+openai
 
-# Hugging Face + Transformers
+# Anthropic Integration
+langchain-anthropic
+
+# Google Gemini (PaLM) Integration
+langchain-google-genai
+google-generativeai
+
+# Hugging Face Integration
+langchain-huggingface
 transformers
 huggingface-hub
 
-# Pydantic for output parsing
-pydantic>=2.0
-
-# Environment variables
+# Environment Variable Management
 python-dotenv
 
-# Optional ML utils
+# Machine Learning Utilities
 numpy
 scikit-learn
