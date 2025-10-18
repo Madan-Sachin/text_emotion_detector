@@ -1,9 +1,17 @@
-streamlit==1.27.0
-langchain==0.3.27
-langchain-core==0.3.27
-langchain-community==0.3.5
-langchain-huggingface==0.0.3
-huggingface-hub==1.28.0
-transformers==4.34.0
-pydantic==2.12.2
-python-dotenv==1.0.0
+# Streamlit
+streamlit==1.50.0
+
+# LangChain latest stable compatible with Python 3.13
+langchain==0.4.25
+langchain-core==0.4.25
+langchain-huggingface==0.0.5
+langchain-community==0.4.0
+
+# HuggingFace Hub for accessing models via API token
+huggingface-hub>=1.25.0,<1.28.0
+
+# Pydantic for output parsing
+pydantic>=1.10.12
+
+# Optional: Rich for better exception logging in Streamlit
+rich>=14.2.0
