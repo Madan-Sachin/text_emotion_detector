@@ -2,14 +2,15 @@ import streamlit as st
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import PydanticOutputParser
 from langchain.chains import LLMChain
-# from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
 import os
 
 # -----------------------------
-# Load Hugging Face token from Streamlit secrets
+# Load environment variables
 # -----------------------------
+# load_dotenv()
 HF_TOKEN = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 
 if not HF_TOKEN:
@@ -20,7 +21,7 @@ if not HF_TOKEN:
 # Define LLM
 # -----------------------------
 llm_endpoint = HuggingFaceEndpoint(
-    repo_id="HuggingFaceH4/zephyr-7b-beta",
+    repo_id="mistralai/Mistral-7B-Instruct-v0.3",
     task="text-generation",
     huggingfacehub_api_token=HF_TOKEN
 )
@@ -66,7 +67,6 @@ chain = LLMChain(
 st.title("Emotion Analysis App ❤️")
 st.write("Type a text below and the AI will classify its emotion.")
 
-# Single-line input (submit manually with button)
 user_input = st.text_input("Enter your text here:")
 
 if st.button("Analyze"):
@@ -82,6 +82,3 @@ if st.button("Analyze"):
                 st.write(f"**Confidence:** {result.confidence:.2f}")
             except Exception as e:
                 st.error(f"Error: {e}")
-
-
-
