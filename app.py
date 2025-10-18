@@ -1,6 +1,6 @@
 import streamlit as st
 from langchain_core.prompts import PromptTemplate
-from langchain.output_parsers import PydanticOutputParser
+from langchain_core.output_parsers import PydanticOutputParser
 from langchain.chains import LLMChain
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from pydantic import BaseModel, Field
@@ -82,4 +82,5 @@ if st.button("Analyze"):
                 st.write(f"**Confidence:** {result.confidence:.2f}")
             except Exception as e:
                 st.error(f"Error: {e}")
+
 
