@@ -1,35 +1,36 @@
 import streamlit as st
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
-from langchain.chains.llm import LLMChain
+from langchain.chains import LLMChain
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from pydantic import BaseModel, Field
-from dotenv import load_dotenv
-import os
 
 # -----------------------------
-# Load environment variables
+# Streamlit Secrets (Hugging Face Token)
 # -----------------------------
-# load_dotenv()
-HF_TOKEN = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
-
-if not HF_TOKEN:
-    st.error("HUGGINGFACEHUB_API_TOKEN not found in Streamlit secrets")
+try:
+    HF_TOKEN = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
+except KeyError:
+    st.error("❌ Hugging Face token not found. Add it in Settings → Secrets")
     st.stop()
 
 # -----------------------------
-# Define LLM
+# Define HuggingFace Endpoint
 # -----------------------------
-llm_endpoint = HuggingFaceEndpoint(
-    repo_id="mistralai/Mistral-7B-Instruct-v0.3",
-    task="text-generation",
-    huggingfacehub_api_token=HF_TOKEN
-)
+try:
+    llm_endpoint = HuggingFaceEndpoint(
+        repo_id="mistralai/Mistral-7B-Instruct-v0.3",
+        task="text-generation",
+        huggingfacehub_api_token=HF_TOKEN
+    )
+except Exception as e:
+    st.error(f"❌ Error initializing HuggingFaceEndpoint: {e}")
+    st.stop()
 
 model = ChatHuggingFace(llm=llm_endpoint)
 
 # -----------------------------
-# Pydantic schema for output
+# Pydantic schema for emotion output
 # -----------------------------
 class EmotionOutput(BaseModel):
     emotion: str = Field(..., description="One of ['Anger', 'Sad', 'Happy', 'Love']")
@@ -49,7 +50,6 @@ Text: {text}
 
 Respond in strict JSON format compatible with the schema.
 """
-
 prompt = PromptTemplate(template=template, input_variables=["text"])
 
 # -----------------------------
@@ -77,11 +77,8 @@ if st.button("Analyze"):
             try:
                 result = chain.run({"text": user_input})
                 st.success("Analysis Complete!")
-                st.json(result.dict())  # Display structured JSON
+                st.json(result.dict())  # structured output
                 st.write(f"**Emotion:** {result.emotion}")
                 st.write(f"**Confidence:** {result.confidence:.2f}")
             except Exception as e:
                 st.error(f"Error: {e}")
-
-
-
