@@ -1,10 +1,22 @@
+# Core Streamlit
 streamlit
-langchain
-langchain-core
-langchain-huggingface
+
+# LangChain ecosystem (latest modular split)
+langchain==0.3.7
+langchain-core==0.3.27
+langchain-community==0.3.7
+langchain-huggingface==0.1.2
+
+# Hugging Face + Transformers
 transformers
 huggingface-hub
-pydantic
+
+# Pydantic for output parsing
+pydantic>=2.0
+
+# Environment variables
 python-dotenv
+
+# Optional ML utils
 numpy
 scikit-learn
